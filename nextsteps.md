@@ -1,26 +1,24 @@
 ## Next Steps
 
-**Phase 1: Setup & Core Component Testing**
-
-*   **Individual Component Tests:**
-    *   **OpenAI STT/TTS:**
-        *   (Optional) Test the `test_openai_stt.py` script with a WAV file containing actual speech to get a more meaningful transcription.
-        *   Integrate the STT and TTS scripts into a single, unified voice agent pipeline.
-    *   **Moondream2:** Write a script that loads the Moondream2 model and provides a description for a local test image.
-    *   **Selenium:** Test the `test_selenium.py` script.
-
 **Phase 2: Web Automation & Camera Image Capture**
 
-*   Develop Selenium Control Flow Function `get_camera_feed_screenshot(location_query: str) -> str | None:`.
-*   Refinement & Error Handling.
+1.  **Restructure Project:**
+    *   Create a new `AICHackathon/app` directory for the main application files.
+    *   Move `testing/test_integration.py` to `app/main.py`.
+    *   Move `testing/test_moondream_helper.py` to `app/moondream_helper.py`.
+    *   Move `testing/individual_component_tests/test_selenium_flow.py` to `app/camera_handler.py`.
+    *   Update all imports to reflect the new structure.
 
-**Phase 3: Moondream Analysis & Voice Integration**
+2.  **Enhance Selenium Workflow (`camera_handler.py`):**
+    *   Modify the `get_camera_screenshot` function to accept a natural language `location_query` (e.g., "1st Avenue and 110th Street") instead of a hardcoded camera name.
+    *   Implement logic to iterate through the camera list on the NYCTMC website and find the camera that best matches the user's query. This will likely involve text parsing and string similarity matching.
+    *   Refactor the function to return the path to the captured screenshot or `None` if a camera cannot be found.
 
-*   Moondream Image Analysis Function `get_moondream_analysis(image_path: str) -> str:`.
-*   Voice Pipeline Functions (Using OpenAI Realtime APIs).
+3.  **Implement Robust Error Handling:**
+    *   Wrap the Selenium interactions in `try...except` blocks to gracefully handle `TimeoutException` and `NoSuchElementException`.
+    *   Provide clear logging and user-facing error messages when the camera feed cannot be accessed or a match for the location is not found.
 
-**Phase 4: Streamlit UI & End-to-End Pipeline**
-
-*   Design the UI Flow.
-*   Orchestrate the Main Logic.
-*   Refinements and User Experience.
+4.  **Update Main Application (`main.py`):**
+    *   Integrate the enhanced `get_camera_screenshot` function.
+    *   Update the Streamlit UI to take a natural language location query from the user (either via text input or voice transcription).
+    *   Handle the case where `get_camera_screenshot` returns `None` by displaying an appropriate error message to the user.
