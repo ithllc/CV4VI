@@ -8,6 +8,7 @@ from streamlit_mic_recorder import mic_recorder
 from camera_controller import get_camera_feed_screenshot
 from moondream_analyzer import load_model, get_moondream_analysis
 from voice_pipeline import transcribe_user_request_realtime, generate_assistant_speech_realtime
+from location_parser import extract_and_normalize_location
 
 st.set_page_config(page_title="AI Street Crossing Assistant", layout="wide")
 
@@ -58,27 +59,40 @@ if audio_bytes:
                 return
             st.write(f"**You asked:** *{user_query}*")
 
-        # For the PoC, we extract the location from the query manually.
-        # A more robust solution would use NLP to extract the location.
-        location_query = user_query.split("at ")[-1].split(",")[0].strip()
+        # Step 2: Extract and normalize the location from the query
+        location_query = extract_and_normalize_location(user_query)
+        if not location_query:
+            error_message = "Sorry, I couldn't identify a location in your request. Please try again and state the location clearly, for example: 'I'm at 1st Avenue and 110th Street.'"
+            st.error(error_message)
+            with st.spinner('Preparing audio response...'):
+                speech_audio_bytes = await generate_assistant_speech_realtime(error_message, client)
+                if speech_audio_bytes:
+                    st.audio(speech_audio_bytes, format="audio/wav")
+            return
+        
         st.write(f"**Location identified:** *{location_query}*")
 
-        # Step 2: Get the camera feed screenshot
+        # Step 3: Get the camera feed screenshot
         with st.spinner(f'Accessing traffic camera for {location_query}...'):
             image_path = get_camera_feed_screenshot(location_query)
 
         if image_path is None:
-            st.error(f"Sorry, I couldn't access the camera feed for '{location_query}'. Please try another location.")
+            error_message = f"Sorry, I couldn't access the camera feed for '{location_query}'. Please try another location."
+            st.error(error_message)
+            with st.spinner('Preparing audio response...'):
+                speech_audio_bytes = await generate_assistant_speech_realtime(error_message, client)
+                if speech_audio_bytes:
+                    st.audio(speech_audio_bytes, format="audio/wav")
             return
 
-        # Step 3: Display the screenshot
+        # Step 4: Display the screenshot
         st.image(image_path, caption=f"Live Camera View for {location_query}")
 
-        # Step 4: Analyze the image with Moondream
+        # Step 5: Analyze the image with Moondream
         with st.spinner('Analyzing the view...'):
             analysis_text = get_moondream_analysis(model, tokenizer, image_path)
 
-        # Step 5: Generate and play the audio response
+        # Step 6: Generate and play the audio response
         st.success(f"**Assistant's Assessment:** {analysis_text}")
         with st.spinner('Preparing audio response...'):
             speech_audio_bytes = await generate_assistant_speech_realtime(analysis_text, client)

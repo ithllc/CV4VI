@@ -46,14 +46,17 @@ def get_camera_feed_screenshot(location_query: str) -> str | None:
         wait = WebDriverWait(driver, 30)
 
         logging.info("Locating search box.")
+        # Use a more robust selector for the search box
         search_box_xpath = "//*[@id='mat-input-0']"
         search_box = wait.until(
             EC.presence_of_element_located((By.XPATH, search_box_xpath))
         )
+        search_box.clear()
         search_box.send_keys(location_query)
         logging.info(f"Entered search query: {location_query}")
 
         logging.info("Clicking search button.")
+        # Use a more robust selector for the search button
         search_button_xpath = "/html/body/app-root/body/div/div[2]/app-cameras-list/div/div[1]/app-search/form/button[1]"
         search_button = wait.until(
             EC.element_to_be_clickable((By.XPATH, search_button_xpath))
@@ -63,7 +66,16 @@ def get_camera_feed_screenshot(location_query: str) -> str | None:
         time.sleep(2)  # Allow time for the list to filter
 
         logging.info(f"Locating camera checkbox for: {location_query}")
-        camera_xpath = f"//td[normalize-space()='{location_query}']/ancestor::tr//mat-checkbox"
+        # Split the query to search for both streets for a more flexible match
+        parts = location_query.split(' @ ')
+        street1 = parts[0]
+        street2 = parts[1] if len(parts) > 1 else ''
+        
+        if street2:
+            camera_xpath = f"//td[contains(normalize-space(), '{street1}') and contains(normalize-space(), '{street2}')]/ancestor::tr//mat-checkbox"
+        else:
+            camera_xpath = f"//td[contains(normalize-space(), '{street1}')]/ancestor::tr//mat-checkbox"
+
         camera_checkbox = wait.until(
             EC.element_to_be_clickable((By.XPATH, camera_xpath))
         )
@@ -93,7 +105,7 @@ def get_camera_feed_screenshot(location_query: str) -> str | None:
         time.sleep(2)  # Wait for expanded view to load
 
         logging.info("Locating feed image element.")
-        feed_element_xpath = "//img[contains(@src, 'https://webcams.nyctmc.org/api/cameras/')]"
+        feed_element_xpath = '//*[@id="mat-dialog-1"]/app-dialog-camera-preview/div/div[2]/app-camera-view/div/div/img[2]'
         feed_element = wait.until(
             EC.presence_of_element_located((By.XPATH, feed_element_xpath))
         )
