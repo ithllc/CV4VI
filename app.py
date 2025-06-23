@@ -10,9 +10,9 @@ from moondream_analyzer import load_model, get_moondream_analysis
 from voice_pipeline import transcribe_user_request_realtime, generate_assistant_speech_realtime
 from location_parser import extract_and_normalize_location
 
-st.set_page_config(page_title="AI Street Crossing Assistant", layout="wide")
+st.set_page_config(page_title="Proof of Concept AI Street Crossing Assistant for Visually Impaired in NYC", layout="wide")
 
-st.title("AI Street Crossing Assistant")
+st.title("AI Street Crossing Assistant for Visually Impaired in NYC")
 st.markdown("Ask if it's safe to cross the street at a specific location in NYC.")
 
 # --- API Key and Model Loading ---
@@ -60,7 +60,17 @@ if audio_bytes:
             st.write(f"**You asked:** *{user_query}*")
 
         # Step 2: Extract and normalize the location from the query
-        location_query = extract_and_normalize_location(user_query)
+        extracted_location = extract_and_normalize_location(user_query)
+        
+        # Validate that the extracted location is in the correct format (street1 @ street2)
+        location_query = None
+        if extracted_location and ' @ ' in extracted_location:
+            # Check if it's properly formatted as "street @ street"
+            parts = extracted_location.split(' @ ')
+            print(parts)
+            if len(parts) == 2 and parts[0].strip() and parts[1].strip():
+                location_query = extracted_location
+        
         if not location_query:
             error_message = "Sorry, I couldn't identify a location in your request. Please try again and state the location clearly, for example: 'I'm at 1st Avenue and 110th Street.'"
             st.error(error_message)

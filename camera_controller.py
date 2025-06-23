@@ -105,11 +105,39 @@ def get_camera_feed_screenshot(location_query: str) -> str | None:
         time.sleep(2)  # Wait for expanded view to load
 
         logging.info("Locating feed image element.")
-        feed_element_xpath = '//*[@id="mat-dialog-1"]/app-dialog-camera-preview/div/div[2]/app-camera-view/div/div/img[2]'
-        feed_element = wait.until(
-            EC.presence_of_element_located((By.XPATH, feed_element_xpath))
-        )
-        logging.info("Taking screenshot.")
+        # Try multiple XPath strategies to find the camera image
+        feed_element = None
+        feed_xpaths = [
+            '//*[@id="mat-dialog-1"]/app-dialog-camera-preview/div/div[2]/app-camera-view/div/div/img[2]',
+            '//*[@id="mat-dialog-1"]//img[contains(@src, "nyctmc.org")]',
+            '//app-dialog-camera-preview//img[last()]',
+            '//app-camera-view//img[last()]',
+            '//mat-dialog-container//img[contains(@src, "camera") or contains(@src, "webcam")]'
+        ]
+        
+        for i, xpath in enumerate(feed_xpaths):
+            try:
+                logging.info(f"Trying XPath {i+1}/{len(feed_xpaths)}: {xpath}")
+                feed_element = wait.until(
+                    EC.presence_of_element_located((By.XPATH, xpath))
+                )
+                logging.info(f"Found feed element with XPath {i+1}")
+                break
+            except TimeoutException:
+                logging.warning(f"XPath {i+1} failed, trying next...")
+                continue
+        
+        if not feed_element:
+            logging.error("Could not locate camera feed image with any XPath")
+            # Take a full page screenshot as fallback
+            logging.info("Taking full page screenshot as fallback")
+            screenshot = driver.get_screenshot_as_png()
+            with open(screenshot_path, "wb") as f:
+                f.write(screenshot)
+            logging.info(f"Full page screenshot saved to {screenshot_path}")
+            return screenshot_path
+        
+        logging.info("Taking screenshot of feed element.")
         feed_element.screenshot(screenshot_path)
         logging.info(f"Screenshot saved to {screenshot_path}")
         
