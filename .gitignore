@@ -1,6 +1,10 @@
+# .gitignore for AICHackathon repository
+# Ignore Python environment folder
 hackathon/
 .streamlit/
+# Ignore specialized github folder
 openai_realtime_voice_agent_sdk/
+
 #RevisedPOCworkplan.md
 #POCworkplan.md
 #current_status.md
@@ -26,3 +30,15 @@ README_MAINTENANCE.md
 remove_pycache.sh
 REPO_MAINTENANCE_README.md
 repo_maintenance.sh
+
+# Ignore Hugging Face Markdown files
+huggingface_spaces.md
+deploy_app_to_huggingface_spaces.md
+requirements_huggingface_spaces.txt
+moondream_analyzer_huggingface_spaces.py
+README_huggingface_spaces.md
+automated_deployment_prompt.md
+Dockerfile_huggingface_spaces
+
+# Ignore HuggingFace Spaces Streamlit config
+.streamlit/config.toml
