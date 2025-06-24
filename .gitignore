@@ -19,3 +19,10 @@ test_data/
 # Ignore Access Control files
 ACCESS_CONTROL_README.md
 setup_git_lfs_access_control.sh
+
+# Ignore Repository Maintenance files
+delete_master_branch.sh
+README_MAINTENANCE.md
+remove_pycache.sh
+REPO_MAINTENANCE_README.md
+repo_maintenance.sh
