@@ -1,0 +1,5 @@
+# Set specific files to be accessible only to collaborators
+nextsteps.md filter=lfs diff=lfs merge=lfs -text
+RevisedPOCworkplan.md filter=lfs diff=lfs merge=lfs -text
+POCworkplan.md filter=lfs diff=lfs merge=lfs -text
+current_status.md filter=lfs diff=lfs merge=lfs -text
