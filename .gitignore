@@ -1,0 +1,21 @@
+hackathon/
+.streamlit/
+openai_realtime_voice_agent_sdk/
+#RevisedPOCworkplan.md
+#POCworkplan.md
+#current_status.md
+#nextsteps.md
+old_current_status.md
+old_nextsteps.md
+# Ignore audio files
+*.mp3
+*.wav
+
+# Ignore pycache directories
+**/__pycache__/
+# Ignore test data directory
+test_data/
+
+# Ignore Access Control files
+ACCESS_CONTROL_README.md
+setup_git_lfs_access_control.sh

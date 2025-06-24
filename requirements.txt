@@ -1,0 +1,9 @@
+streamlit
+openai
+selenium
+transformers
+torch
+pillow
+streamlit-mic-recorder
+webdriver-manager
+toml
