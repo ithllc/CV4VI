@@ -2,7 +2,7 @@
 
 CV4VI is an acronym for "Computer Vision For Vision Impaired".
 
-This is a proof of concept that uses a web app as simulated environment for an application on an edge device that has practical use of AI models.
+This is a proof of concept allowing the user to interface with a web app as simulated environment for an application on an edge device that has practical use of AI models. The AI-powered assistant that helps visually impaired individuals determine if it's safe to cross the street at specific intersections in New York City.
 
 ## Installation
 1. Clone the repo  
@@ -17,6 +17,15 @@ This is a proof of concept that uses a web app as simulated environment for an a
    conda env create -f environment.yml
    conda activate hackathon
    ```
+4. Install Git LFS and initialize it if not already done
+   `git lfs install`
+
+5. Clone the repo for Moondream2 vision model
+   `git clone git clone https://huggingface.co/vikhyatk/moondream2`
+
+6. In the file moondream_analyzer.py, change the current directory path on line 15 to the directory path of your cloned Moondream2 vision model
+   `/python_code_src/moondream2`
+
 
 ## Usage
 To start the app:
@@ -54,12 +63,17 @@ For a quick test of the system:
 3. Say "I'm at 1st Avenue and 110th Street, can I cross?"
 4. Wait for the system to process and respond
 
+To Demo:
+1. Go to the URL (https://huggingface.co/spaces/AU2003USD2024/ai-street-crossing-assistant)
+2. Follow the instructions on quick test
+
 ## License
 This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## Roadmap
 ### Refinement and Robustness
 - Advanced location matching with geocoding API
+- Depth perception using LiDAR 
 - Selenium hardening for better web automation
 - Configuration management improvements
 
