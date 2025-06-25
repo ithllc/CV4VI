@@ -73,7 +73,7 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## Roadmap
 ### Refinement and Robustness
 - Advanced location matching with geocoding API
-- Depth perception using LiDAR 
+- Depth perception using LiDAR technology
 - Selenium hardening for better web automation
 - Configuration management improvements
 
