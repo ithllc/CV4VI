@@ -21,7 +21,7 @@ This is a proof of concept allowing the user to interface with a web app as simu
    `git lfs install`
 
 5. Clone the repo for Moondream2 vision model
-   `git clone git clone https://huggingface.co/vikhyatk/moondream2`
+   `git clone https://huggingface.co/vikhyatk/moondream2`
 
 6. In the file moondream_analyzer.py, change the current directory path on line 15 to the directory path of your cloned Moondream2 vision model
    `/python_code_src/moondream2`
