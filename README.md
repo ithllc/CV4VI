@@ -2,7 +2,7 @@
 
 CV4VI is an acronym for "Computer Vision For Visually Impaired".
 
-This is a proof of concept allowing the user to interface with a web app as simulated environment for an application on an edge device that has practical use of AI models. The AI-powered assistant that helps visually impaired individuals determine if it's safe to cross the street at specific intersections in New York City.
+This is a proof of concept allowing the user to interface with a web app to work as a simulated environment for an application on an edge device that has practical use of AI models. The AI-powered assistant that helps visually impaired individuals determine if it's safe to cross the street at specific intersections in New York City.
 
 ## Installation
 1. Clone the repo  
