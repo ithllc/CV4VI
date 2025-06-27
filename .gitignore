@@ -15,8 +15,9 @@ old_nextsteps.md
 *.mp3
 *.wav
 
-# Ignore pycache directories
+# Ignore pycache directories and files
 **/__pycache__/
+*.pyc
 # Ignore test data directory
 test_data/
 

@@ -68,7 +68,7 @@ To Demo:
 2. Follow the instructions on quick test
 
 ## License
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under GNU AFFERO GENERAL PUBLIC LICENSE - see the LICENSE file for details.
 
 ## Roadmap
 ### Refinement and Robustness
